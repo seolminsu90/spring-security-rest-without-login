@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.security.api.domain.Role;
 
-public interface RoleRepository extends JpaRepository<Role, String> {
-    List<Role> findRoleIdByUserId(String userId);
+public interface RoleRepository extends JpaRepository<Role, Integer> {
+    List<Role> findRoleIdByUserSeq(Integer userSeq);
 }

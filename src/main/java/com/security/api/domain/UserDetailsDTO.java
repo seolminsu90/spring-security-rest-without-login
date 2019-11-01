@@ -23,7 +23,6 @@ public class UserDetailsDTO implements UserDetails {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
     private Collection<? extends GrantedAuthority> authorities;
-    private String authority_name;
     private Long expired;
 
     @Override

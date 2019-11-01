@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.security.api.domain.Operation;
 
-public interface OperationRepository extends JpaRepository<Operation, String> {
-    List<Operation> findOperationByRoleId(String roleId);
+public interface OperationRepository extends JpaRepository<Operation, Integer> {
+    List<Operation> findOperationByRoleSeq(Integer roleSeq);
 }

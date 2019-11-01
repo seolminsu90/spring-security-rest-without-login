@@ -1,10 +1,8 @@
 package com.security.api.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,10 +30,10 @@ public class UserService {
 
     // Set UserDetails From DB
     public UserDetailsDTO readUser(String id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
+        User user = userRepository.findByUserId(id);
+        if (user != null) {
             UserDetailsDTO userDto = new UserDetailsDTO();
-            userDto.setAuthorities(getAuthorities(id));
+            userDto.setAuthorities(getAuthoritiesFromRoles(user.getRoles()));
             userDto.setId(id);
             return userDto;
         } else {
@@ -44,12 +42,12 @@ public class UserService {
     }
 
     // Set Authorities From DB
-    public Collection<GrantedAuthority> getAuthorities(String id) {
-        List<Role> authoritiesList = roleRepository.findRoleIdByUserId(id);
+    public Collection<GrantedAuthority> getAuthorities(Integer userSeq) {
+        List<Role> authoritiesList = roleRepository.findRoleIdByUserSeq(userSeq);
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         authoritiesList.stream().forEach(role -> {
-            List<Operation> operationList = operationRepository.findOperationByRoleId(role.getAuthority());
+            List<Operation> operationList = operationRepository.findOperationByRoleSeq(role.getRoleSeq());
             operationList.stream().forEach(operation -> {
                 authorities.add(new SimpleGrantedAuthority(operation.getAuthority()));
             });
@@ -63,17 +61,33 @@ public class UserService {
     // Set UserDetails From Token
     public UserDetailsDTO readUser(String id, List<String> authorities) {
         UserDetailsDTO userDto = new UserDetailsDTO();
-        userDto.setAuthorities(getAuthorities(authorities));
+        userDto.setAuthorities(getAuthoritiesFromToken(authorities));
         userDto.setId(id);
         return userDto;
     }
 
     // Set Authorities From Token
-    public Collection<GrantedAuthority> getAuthorities(List<String> authorityList) {
+    public Collection<GrantedAuthority> getAuthoritiesFromToken(List<String> authorityList) {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         authorityList.stream().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role));
+        });
+
+        return authorities;
+    }
+
+    // Set Authorities From JPA Join User's Roles
+    public Collection<GrantedAuthority> getAuthoritiesFromRoles(List<Role> roleList) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        roleList.stream().forEach(role -> {
+            List<Operation> operationList = role.getOperations();
+            operationList.stream().forEach(operation -> {
+                authorities.add(new SimpleGrantedAuthority(operation.getAuthority()));
+            });
+
+            authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
         });
 
         return authorities;
