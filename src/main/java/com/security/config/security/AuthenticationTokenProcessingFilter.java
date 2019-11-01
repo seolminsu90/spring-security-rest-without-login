@@ -1,9 +1,6 @@
 package com.security.config.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -54,11 +49,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             int status = (Integer) resultMap.get("return");
             if (status == 0) {
                 String id = (String) resultMap.get("id");
-                List<String> auth_list = (List<String>) resultMap.get("auth_list");
-
-                UserDetailsDTO user = new UserDetailsDTO();
-                user.setAuthorities(setAuthorities(auth_list));
-                user.setId(id);
+                UserDetailsDTO user = userService.readUser(id, (List<String>) resultMap.get("auth_list"));
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null,
                         user.getAuthorities());
@@ -69,14 +60,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         }
 
         // TEST
-        // 위 검증과 별개로 그냥 테스트삼아 권한 하나 만들어서 넣은 것.
-        List<String> arr = new ArrayList<String>();
-        arr.add("ROLE_A");
-        UserDetailsDTO user = new UserDetailsDTO();
-        user.setAuthorities(setAuthorities(arr));
-        user.setId("sms");
-        user.setGames(new ArrayList<>(Arrays.asList("kakao", "line")));
-
+        UserDetailsDTO user = userService.readUser("sms");
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null,
                 user.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
@@ -85,16 +69,6 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         // TEST END
 
         chain.doFilter(request, response);
-    }
-
-    public Collection<GrantedAuthority> setAuthorities(List<String> auth_list) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        auth_list.stream().forEach(authority -> {
-            authorities.add(new SimpleGrantedAuthority(authority));
-        });
-
-        return authorities;
     }
 
     private String getAuthentication(HttpServletRequest httpRequest) {
