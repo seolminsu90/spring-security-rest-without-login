@@ -8,3 +8,4 @@
 ## update
 - 실무에서 하려는 유저권한에 맞게 유저 -> 권한 유저 -> 게임보유 시에 처리 가능하도록 aop 설정추가
 - 실무에서 하려는 3계층 권한 구현 시도를 위해 3계층 JPA join Test
+  - 또는 AccessDecisionManager 구현해서 @Secured가 아닌 방식으로 직접구현 해야할 듯
