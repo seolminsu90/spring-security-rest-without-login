@@ -33,15 +33,15 @@ INSERT INTO TB_USER
 INSERT INTO TB_ROLE
   (ROLE_SEQ, USER_SEQ, ROLE_ID)
   VALUES
-  (1, 4, 'ROLE_D'),
-  (2, 4, 'ROLE_C'),
-  (3, 4, 'ROLE_B'),
-  (4, 4, 'ROLE_A');
+  (1, 4, 'D'),
+  (2, 4, 'C'),
+  (3, 4, 'E'),
+  (4, 4, 'A');
 
 INSERT INTO TB_OPERATION
   (OPERATION_SEQ, ROLE_SEQ, OPERATION_ID)
   VALUES
-  (1, 4, 'ROLE_SELECT'),
-  (2, 4, 'ROLE_CREATE'),
-  (3, 4, 'ROLE_UPDATE'),
-  (4, 4, 'ROLE_DELETE');
+  (1, 4, 'SELECT'),
+  (2, 4, 'CREATE'),
+  (3, 4, 'UPDATE'),
+  (4, 4, 'DELETE');

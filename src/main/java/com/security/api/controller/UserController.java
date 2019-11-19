@@ -20,13 +20,13 @@ public class UserController {
         return auth.getPrincipal();
     }
 
-    @Secured("ROLE_A")
+    @Secured("A")
     @GetMapping("/check/a")
     public String checkAuthA() {
         return "A is pass";
     }
 
-    @Secured("ROLE_B")
+    @Secured("B")
     @GetMapping("/check/b")
     public String checkAuthB() {
         return "B is pass";
@@ -37,13 +37,13 @@ public class UserController {
         return "C is pass (No Secured)";
     }
 
-    @PreAuthorize("isAuthenticated() and ((principal.games != null and principal.games.contains(#game)) and hasAuthority('ROLE_A'))")
+    @PreAuthorize("isAuthenticated() and ((principal.games != null and principal.games.contains(#game)) and hasAuthority('A'))")
     @GetMapping("/check/pre-a/hasgames")
     public String checkAuthPreAHasGames(@RequestParam String game) {
         return "A is pass";
     }
 
-    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_A')")
+    @PreAuthorize("isAuthenticated() and hasAuthority('A')")
     @GetMapping("/check/pre-a/nogames")
     public String checkAuthPreANoHasGames() {
         return "A is pass";
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @ResourceGameSelector
-    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_SELECT') and hasAuthority(#game)")
+    @PreAuthorize("isAuthenticated() and hasAuthority('SELECT') and hasAuthority(#game)")
     @GetMapping("/inject/aop/test")
     public String injectAopTest(@RequestAttribute(required = false, name = "selected") String game) {
         return "Hello world !!!";
