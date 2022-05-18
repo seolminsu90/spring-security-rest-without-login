@@ -49,7 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(customAuthenticationProvider);
     }
-
+    
+    /*
+    별도의 Login API 구현 시 아래 처럼 Provider를 제외.
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(new NullAuthenticationProvider());
+    }
+    */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
