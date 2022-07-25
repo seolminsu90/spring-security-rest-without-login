@@ -1,4 +1,4 @@
-# spring-security-rest
+# spring-security-rest-without-login
 - spring + security 참조용
 - Rest 방식의 인증 필터를 구현
 - Security Login을 제거하고 외부 헥사 토큰으로만 사용할 때 사용할법 함
@@ -8,7 +8,7 @@
 
 ## 기타 로그인시 부가 정보 필요 시
 - WebAuthenticationDetails, AuthenticationDetailsSource 를 커스텀 구현해서 security config에 설정해주면 됨.
-- *개인적으로 별도 로그인 구현이 더 편하긴함
+- spring-security-rest < 프로젝트의 ExtraParam 참고 *개인적으로 별도 로그인 구현하고 Auth만 가져다 쓰는게 편하긴함..
 
 ## update
 - 실무에서 하려는 유저권한에 맞게 유저 -> 권한 유저 -> 게임보유 시에 처리 가능하도록 aop 설정추가
