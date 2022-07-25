@@ -6,6 +6,10 @@
 - 어디에 바로 쓸 수 있는 프로젝트 X, 부분적으로 활용할 만한 요소 기억용도(security... aop... jpa..)
 - 이 기반으로 별도 Login 구현 / Security 적용한 건 cs-homework 참조하기
 
+## 기타 로그인시 부가 정보 필요 시
+- WebAuthenticationDetails, AuthenticationDetailsSource 를 커스텀 구현해서 security config에 설정해주면 됨.
+- *개인적으로 별도 로그인 구현이 더 편하긴함
+
 ## update
 - 실무에서 하려는 유저권한에 맞게 유저 -> 권한 유저 -> 게임보유 시에 처리 가능하도록 aop 설정추가
 - 실무에서 하려는 3계층 권한 구현 시도를 위해 3계층 JPA join Test
